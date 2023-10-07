@@ -2,6 +2,8 @@
 
 This code is for the workshop "Introduction to Body Pose Estimation" by Alex Dillhoff at HackUTA 2023.
 
+[Presentation Slides](https://docs.google.com/presentation/d/1yuIdRLyvbE97CH4Yq4NYgfeTLR9aiAfQ5C-4rDtXN6c/edit?usp=sharing)
+
 ## Setup
 
 ```bash
@@ -11,7 +13,7 @@ conda env create -f requirements.yml
 
 ### Connecting to Spotify
 
-To integrate the Spotify API using `spotipy`, you will need to create an application on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications) and use the generated client ID and client secret to set `SPOTIPY_CLIENT` and `SPOTIPY_SECRET` in `audio.py`.
+To integrate the Spotify API using `spotipy`, you will need to create an application on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications) and use the generated client ID and client secret to export them as environment variables. These will be read by `spotipy` to authenticate your application.
 
 ## Dependencies
 

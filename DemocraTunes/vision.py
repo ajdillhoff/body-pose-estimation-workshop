@@ -5,13 +5,8 @@ from mediapipe.tasks.python import vision
 import mediapipe as mp
 
 class Vision:
-    def __init__(self, callback):
+    def __init__(self, callback, model_path=None):
         self.callback = callback
-
-        # Get the path of the model
-        current_dir = Path(__file__)
-        models_dir = current_dir.parent.parent / "models"
-        model_path = str(models_dir / "gesture_recognizer.task")
 
         base_options = python.BaseOptions(model_asset_path=model_path)
         running_mode = vision.RunningMode.LIVE_STREAM

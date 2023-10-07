@@ -1,3 +1,6 @@
+from argparse import Namespace
+import json
+from pathlib import Path
 import cv2
 import time
 from threading import Thread
@@ -18,29 +21,33 @@ class Track:
         return self.id == other.id
 
 class DemocraTunes:
-    VOTE_TIMEOUT = 1  # Seconds
-    VOTE_THRESHOLD = 3   # This is the difference between upvotes and downvotes that is required to skip a song
-
-    def __init__(self):
+    def __init__(self, params):
         # Configurations
         self.last_vote_time = time.time()
         self.log = []
         self.current_track = None
+        self.vote_timeout = params.vote_timeout  # Seconds
+        self.vote_threshold = params.vote_threshold  # This is the difference between upvotes and downvotes that is required to skip a song
 
         # Initialize the camera and vision system
         self.cap = cv2.VideoCapture(0)  # Connect to the camera. Change 0 to 1 or 2 etc. if you have multiple cameras.
-        self.cap.set(cv2.CAP_PROP_FPS, 30)  # Needed to work with OSX
-        self.vision = Vision(self.got_gesture)
+
+        # Set the camera resolution
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, params.width)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, params.height)
+
+        self.cap.set(cv2.CAP_PROP_FPS, params.fps)  # Needed to work with OSX
+        self.vision = Vision(self.got_gesture, params.gesture_model)
 
         # Initialize the player
-        self.player = SpotifyPlayer(callback=self.audio_status_callback)
+        self.player = SpotifyPlayer(self.audio_status_callback, params.rate_limit)
         self.player_thread = Thread(target=self.player.run)
 
     def got_gesture(self, gesture):
         """Callback for when a gesture is detected."""
         time_since_last_vote = time.time() - self.last_vote_time
 
-        if time_since_last_vote > self.VOTE_TIMEOUT:
+        if time_since_last_vote > self.vote_timeout:
             self.last_vote_time = time.time()
             
             if self.current_track is not None:
@@ -51,7 +58,7 @@ class DemocraTunes:
                     self.current_track.downvotes += 1
                     print(f"Downvoted {self.current_track.name} by {self.current_track.artist} from {self.current_track.album}")
 
-                if self.current_track.downvotes - self.current_track.upvotes >= self.VOTE_THRESHOLD:
+                if self.current_track.downvotes - self.current_track.upvotes >= self.vote_threshold:
                     print(f"Skipping {self.current_track.name} by {self.current_track.artist} from {self.current_track.album}")
                     self.player.sp.next_track()
 
@@ -141,7 +148,8 @@ class DemocraTunes:
 
 
 def main():
-    app = DemocraTunes()
+    params = Namespace(**json.load(open((Path(__file__).parent / "config.json"), "r")))
+    app = DemocraTunes(params)
     app.run()
 
 if __name__ == '__main__':
