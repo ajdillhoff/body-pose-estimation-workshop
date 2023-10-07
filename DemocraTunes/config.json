@@ -2,8 +2,8 @@
     "gesture_model": "models/gesture_recognizer.task",
     "vote_timeout": 2,
     "vote_threshold": 3,
-    "width": 1024,
-    "height": 768,
+    "width": 1920,
+    "height": 1080,
     "rate_limit": 1,
-    "fps": 30
+    "fps": 15
 }

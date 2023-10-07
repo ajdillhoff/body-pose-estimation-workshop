@@ -1,5 +1,6 @@
 name: democratunes
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - opencv
