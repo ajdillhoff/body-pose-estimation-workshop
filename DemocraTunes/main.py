@@ -29,6 +29,7 @@ class DemocraTunes:
 
         # Initialize the camera and vision system
         self.cap = cv2.VideoCapture(0)  # Connect to the camera. Change 0 to 1 or 2 etc. if you have multiple cameras.
+        self.cap.set(cv2.CAP_PROP_FPS, 30)  # Needed to work with OSX
         self.vision = Vision(self.got_gesture)
 
         # Initialize the player

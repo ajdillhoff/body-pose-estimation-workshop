@@ -3,8 +3,8 @@ import time
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-SPOTIPY_CLIENT = "YOUR_ID_HERE"
-SPOTIPY_SECRET = "YOUR_SECRET_HERE"
+SPOTIPY_CLIENT = "dbdeb55d09944707bf984d5d08b2ebd7"
+SPOTIPY_SECRET = "690c13f9fa7c47d69c130cc8e74914f2"
 SPOTIPY_REDIRECT_URI = "http://localhost:8080"
 
 class SpotifyPlayer:
